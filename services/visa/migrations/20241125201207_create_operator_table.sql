@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS applicant (
+CREATE TABLE Operator (
     id BIGSERIAL PRIMARY KEY,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
@@ -14,5 +14,5 @@ CREATE TABLE IF NOT EXISTS applicant (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE IF EXISTS applicant;
+DROP TABLE IF EXISTS operator;
 -- +goose StatementEnd

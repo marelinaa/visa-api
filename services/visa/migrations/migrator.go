@@ -11,7 +11,6 @@ import (
 const migrationsPath = "."
 
 func RunMigrations(dsn string) (err error) {
-
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		return err

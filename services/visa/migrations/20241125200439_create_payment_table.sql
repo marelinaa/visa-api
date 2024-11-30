@@ -1,12 +1,11 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE IF NOT EXISTS applicant (
+CREATE TYPE payment_status AS ENUM ('Success', 'In progress', 'Cancelled');
+CREATE TABLE IF NOT EXISTS payment (
     id BIGSERIAL PRIMARY KEY,
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
-    phone_number VARCHAR(20) NOT NULL,
-    email VARCHAR(255),
-    password_hash VARCHAR(255),
+    Sum DECIMAL(12, 2),
+    payment_date TIMESTAMP,
+    status payment_status,    
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -14,5 +13,5 @@ CREATE TABLE IF NOT EXISTS applicant (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE IF EXISTS applicant;
+DROP TABLE IF EXISTS payment;
 -- +goose StatementEnd
