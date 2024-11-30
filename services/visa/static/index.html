@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма заявки на визу</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4d5cb8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4d5cb8;
+        }
+        .message {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Заявка на визу</h1>
+    <form id="visaForm">
+        <label for="first_name">Имя</label>
+        <input type="text" id="first_name" name="first_name" required>
+
+        <label for="last_name">Фамилия</label>
+        <input type="text" id="last_name" name="last_name" required>
+
+        <label for="phone_num">Телефон</label>
+        <select id="country_code" name="country_code"></select>
+        <input type="text" id="phone_num" name="phone_num" required placeholder="Введите номер телефона" pattern="\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <button type="submit">Подать заявку</button>
+    </form>
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+    const countryCodes = [
+        { code: "+1", country: "США" },
+        { code: "+7", country: "Россия" },
+        { code: "+44", country: "Великобритания" },
+        { code: "+49", country: "Германия" },
+        { code: "+33", country: "Франция" },
+        { code: "+34", country: "Испания" },
+        { code: "+39", country: "Италия" },
+        { code: "+81", country: "Япония" },
+        { code: "+86", country: "Китай" },
+        { code: "+61", country: "Австралия" },
+        { code: "+64", country: "Новая Зеландия" },
+        { code: "+41", country: "Швейцария" },
+        { code: "+375", country: "Беларусь" },
+        { code: "+32", country: "Бельгия" },
+        { code: "+45", country: "Дания" },
+        { code: "+46", country: "Швеция" },
+        { code: "+47", country: "Норвегия" },
+        { code: "+353", country: "Ирландия" },
+        { code: "+31", country: "Нидерланды" },
+        { code: "+351", country: "Португалия" },
+        { code: "+420", country: "Чехия" },
+        { code: "+36", country: "Венгрия" },
+        { code: "+381", country: "Сербия" },
+        { code: "+43", country: "Австрия" },
+        { code: "+359", country: "Болгария" },
+        { code: "+30", country: "Греция" },
+        { code: "+48", country: "Польша" },
+        { code: "+372", country: "Эстония" },
+        { code: "+371", country: "Латвия" },
+        { code: "+370", country: "Литва" },
+        { code: "+994", country: "Азербайджан" },
+        { code: "+374", country: "Армения" },
+        { code: "+421", country: "Словакия" },
+        { code: "+386", country: "Словения" },
+        { code: "+972", country: "Израиль" },
+        { code: "+63", country: "Филиппины" },
+        { code: "+62", country: "Индонезия" },
+        { code: "+60", country: "Малайзия" },
+        { code: "+65", country: "Сингапур" },
+        { code: "+84", country: "Вьетнам" },
+        { code: "+977", country: "Непал" },
+        { code: "+254", country: "Кения" },
+        { code: "+256", country: "Уганда" },
+        { code: "+234", country: "Нигерия" },
+        { code: "+27", country: "Южноафриканская Республика" },
+        { code: "+258", country: "Мозамбик" },
+        { code: "+236", country: "Центральноафриканская Республика" },
+        { code: "+251", country: "Эфиопия" },
+        { code: "+212", country: "Марокко" }
+    ];
+
+    // Сортировка по алфавиту
+    countryCodes.sort((a, b) => a.country.localeCompare(b.country));
+
+    // Добавление кодов стран в селектор
+    const countrySelect = document.getElementById('country_code');
+    countryCodes.forEach(({ code, country }) => {
+        const option = document.createElement('option');
+        option.value = code;
+        option.textContent = `${country} (${code})`;
+        countrySelect.appendChild(option);
+    });
+
+    document.getElementById('visaForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const firstName = document.getElementById('first_name').value;
+        const lastName = document.getElementById('last_name').value;
+        const countryCode = document.getElementById('country_code').value;
+        const phoneNum = document.getElementById('phone_num').value;
+        const email = document.getElementById('email').value;
+
+        const data = {
+            first_name: firstName,
+            last_name: lastName,
+            phone_num: countryCode + phoneNum,
+            email: email
+        };
+
+        fetch('http://localhost:8080/v1/visa/apply', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка при отправке заявки');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('message').textContent = data.error || 'Заявка успешно отправлена!';
+        })
+        .catch(error => {
+            document.getElementById('message').textContent = error.message;
+        });
+    });
+</script>
+
+</body>
+</html>
