@@ -5,12 +5,16 @@ import (
 )
 
 type AppConfig struct {
-	DatabaseURL string
+	APIPort        string
+	AuthServiceURL string
+	VisaServiceURL string
 }
 
 func Load() AppConfig {
 	return AppConfig{
-		DatabaseURL: getEnv("DB_URL", "postgres://postgres:p1111@localhost:5432/visa-api?sslmode=disable"),
+		APIPort:        getEnv("API_PORT", "8088"),
+		AuthServiceURL: getEnv("AUTH_URL", "localhost:8082"),
+		VisaServiceURL: getEnv("VISA_URL", "localhost:8080"),
 	}
 }
 

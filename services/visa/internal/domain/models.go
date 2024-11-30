@@ -2,6 +2,20 @@ package domain
 
 type Application struct {
 	ID             int64    `json:"id"`
+	FirstName      string   `json:"first_name" validate:"required"`
+	LastName       string   `json:"last_name" validate:"required"`
+	PhoneNumber    string   `json:"phone_num" validate:"required,e164"`
+	Email          string   `json:"email"  validate:"required,email"`
+	SubmissionDate string   `json:"sub_date"`
+	Status         string   `json:"status"`
+	Documents      []string `json:"docs"`
+	ApplicantID    int64    `json:"applicant_id"`
+	PaymentID      int64    `json:"payment_id"`
+	OperatorID     int64    `json:"operator_id"`
+}
+
+type Application2 struct {
+	ID             int64    `json:"id"`
 	SubmissionDate string   `json:"sub_date"`
 	Status         string   `json:"status"`
 	Documents      []string `json:"docs"`
