@@ -1,4 +1,4 @@
-package service
+package apply
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/marelinaa/visa-api/services/visa/internal/domain"
 	"github.com/marelinaa/visa-api/services/visa/internal/repository"
+	"github.com/marelinaa/visa-api/services/visa/internal/service"
 )
 
 type ApplicantService struct {
@@ -22,12 +23,12 @@ func NewApplicantService(repo *repository.Applicant) *ApplicantService {
 	return gatewayService
 }
 
-func (service *ApplicantService) Apply(ctx context.Context, application domain.Application) error {
-	if err := ValidateApplication(application, service.validate); err != nil {
+func (s *ApplicantService) Apply(ctx context.Context, application domain.Application) error {
+	if err := service.ValidateInput(application, s.validate); err != nil {
 
 		return err
 	}
 
-	return service.repo.AddApplication(ctx, application)
+	return s.repo.AddApplication(ctx, application)
 
 }

@@ -1,26 +1,33 @@
-package handler
+package apply
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/marelinaa/visa-api/services/visa/internal/domain"
-	"github.com/marelinaa/visa-api/services/visa/internal/service"
 )
 
-type ApplicantHandler struct {
-	service *service.ApplicantService
+// Service defines the methods that a user service must implement.
+type ApplyService interface {
+	Apply(ctx context.Context, application domain.Application) error
 }
 
-func NewApplicantHandler(srv *service.ApplicantService) *ApplicantHandler {
-	return &ApplicantHandler{
+type ApplyHandler struct {
+	service ApplyService
+}
+
+func NewApplicantHandler(srv ApplyService) ApplyHandler {
+	h := ApplyHandler{
 		service: srv,
 	}
+
+	return h
 }
 
 // DefineRoutes defines routes for handling different API endpoints
-func (h *ApplicantHandler) DefineRoutes(router *gin.Engine) {
+func (h *ApplyHandler) DefineRoutes(router *gin.Engine) {
 	v1 := router.Group("/v1")
 
 	currency := v1.Group("/visa")
@@ -30,7 +37,7 @@ func (h *ApplicantHandler) DefineRoutes(router *gin.Engine) {
 }
 
 // Apply ...
-func (h *ApplicantHandler) Apply(c *gin.Context) {
+func (h *ApplyHandler) Apply(c *gin.Context) {
 	var parsedApplication domain.Application //parsing application
 	err := json.NewDecoder(c.Request.Body).Decode(&parsedApplication)
 	if err != nil {

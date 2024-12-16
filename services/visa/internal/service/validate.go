@@ -6,7 +6,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func ValidateApplication(input interface{}, validate *validator.Validate) error {
+func ValidateInput(input interface{}, validate *validator.Validate) error {
 	err := validate.Struct(input)
 	if err != nil {
 		if validationErrs, ok := err.(validator.ValidationErrors); ok {

@@ -1,5 +1,28 @@
 package domain
 
+type User struct {
+	ID           int64  `json:"id"`
+	FirstName    string `json:"first_name"`
+	LastName     string `json:"last_name"`
+	PhoneNumber  string `json:"phone_num" validate:"required,e164"`
+	Email        string `json:"email"`
+	PasswordHash string `json:"password_hash"`
+	Role         string `json:"role"`
+}
+
+type SignUpInput struct {
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	PhoneNumber string `json:"phone_num" validate:"required,e164"`
+	Email       string `json:"email" validate:"required,email"`
+	Password    string `json:"password" validate:"required"`
+}
+
+type SignInInput struct {
+	PhoneNumber string `json:"phone_num" validate:"required,e164"`
+	Password    string `json:"password" validate:"required"`
+}
+
 type Application struct {
 	ID             int64    `json:"id"`
 	FirstName      string   `json:"first_name" validate:"required"`
@@ -22,16 +45,6 @@ type Application2 struct {
 	ApplicantID    int64    `json:"applicant_id"`
 	PaymentID      int64    `json:"payment_id"`
 	OperatorID     int64    `json:"operator_id"`
-}
-
-type User struct {
-	ID           int64  `json:"id"`
-	FirstName    string `json:"first_name"`
-	LastName     string `json:"last_name"`
-	PhoneNumber  string `json:"phone_num" validate:"required,e164"`
-	Email        string `json:"email"`
-	PasswordHash string `json:"password_hash"`
-	Role         string `json:"role"`
 }
 
 type Applicant struct {
